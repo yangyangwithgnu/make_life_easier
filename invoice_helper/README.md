@@ -112,7 +112,9 @@ convert -font '/home/yangyang/.local/share/fonts/liguofu.ttf' -pointsize 39 -ann
 这样就完成了一张发票的处理，生成报销单图片。重复一至五步，处理完所有发票，生成多张报销单图片。
 
 第六步，将多张报销单图片转换为 PDF 并合并为单个文件，以便一次性打印：
+```shell
 convert /path/to/expenses_img/*.png -quality 100 final.pdf
+```
 其中，-quality 指定转换质量为 100% 保真。 
 
 ### 脚本自动化
