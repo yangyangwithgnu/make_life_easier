@@ -31,7 +31,7 @@
 
 我琢磨这些繁琐操作或许能让计算机代劳。试试看。
 
-第一步，提取电子发票中的文字信息。所幸原始电子发票是文本版 PDF，而非扫描版，让我可以选择一款钟意的工具，轻松提取文字版 PDF 中的文字信息，poppler-utils（https://poppler.freedesktop.org/）就很不错，基于老牌开源库 xpdf 开发的一款 PDF 处理套件，ubuntu 安装：
+第一步，提取电子发票中的文字信息。所幸原始电子发票是文本版 PDF，而非扫描版，让我可以选择一款钟意的工具，轻松提取文字版 PDF 中的文字信息，poppler-utils（https://poppler.freedesktop.org/ ）就很不错，基于老牌开源库 xpdf 开发的一款 PDF 处理套件，ubuntu 安装：
 sudo apt install poppler-utils poppler-data -y
 之后系统上就有了多个独立工具，比如，将 PDF 转换为文本的工具 pdftotext、转换为图片的 pdftoppm，将多个 PDF 合并成单个的 pdfunite、反之单个拆分成多个的 pdfseparate，提取 PDF 元数据的 pdfinfo、提取内嵌文件的 pdfdetach，总之，装上就赚到。
 
@@ -65,9 +65,9 @@ composite -geometry +60+120 （未知加油站）160.png bottom_sheet.bmp expens
 第五步，模拟手工笔迹填写底单信息。填写信息，实际上就是在图片指定位置上添加文字，字体是手写体就行。
 
 网上找了一圈，李国夫手写体和我的笔迹挺像的：
-
-![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/李国夫手写体.png)
-
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/李国夫手写体.png" alt=""/><br>
+</div>
 下载安装好这款字体之后，找到它的安装路径：
 yangyang@gnu:~$ fc-list | grep -i liguofu
 /home/yangyang/.local/share/fonts/liguofu.ttf: liguofu:style=Regular
@@ -100,7 +100,7 @@ convert /path/to/expenses_img/*.png -quality 100 final.pdf
 
 虽然前面有命令辅助处理发票，但仍需我的指导和看管，这不是我的预期，计算机就应该替我做完绝大部分事，我，最多打开、打印一个 PDF。嗯，得用代码把各个独立的命令串联起来，最好的命令粘合剂的语言理当 python，对标前面命令辅助实现的各步骤，看看 python 如何帮我实现自动化。
 
-说个题外话，刚开始，从编译项目分发、性能提升考虑，我趋向用纯 python 来操纵 PDF 而非第三方命令，当前在维的、功能完善的 PDF 开源库有两个 PyPDF2（https://github.com/mstamy2/PyPDF2/）、pdfrw（https://github.com/pmaupin/pdfrw），经过实际考察，若是英文 PDF，处理效果不错，但中文就无解了，所以，退而其次，任采用调用三方命令，python 作粘合剂。其中几个关键点，简单聊下。
+说个题外话，刚开始，从编译项目分发、性能提升考虑，我趋向用纯 python 来操纵 PDF 而非第三方命令，当前在维的、功能完善的 PDF 开源库有两个 PyPDF2（https://github.com/mstamy2/PyPDF2/ ）、pdfrw（https://github.com/pmaupin/pdfrw ），经过实际考察，若是英文 PDF，处理效果不错，但中文就无解了，所以，退而其次，任采用调用三方命令，python 作粘合剂。其中几个关键点，简单聊下。
 
 提取开票日期中的数字部分。信息 "开票日期: 2019 年02 月27 日" 中的年月日，我以非数字作为分隔符，即可提取数字部分：
 <div align="center">
@@ -108,11 +108,11 @@ convert /path/to/expenses_img/*.png -quality 100 final.pdf
 </div>
 其中，正则的 [^0-9] 等同于 '\D'。
 
-判断日期是否为工作日。前面是通过百度查询，我倒是可以用 requests 自动查询，但程序又得依赖互联网，最好有个离线版的。库 workalendar（https://github.com/peopledoc/workalendar）挺强大的，可处理大部份国家、2099 年前的节假日，但它只识别假日的第一天、无法识别结束日期：
+判断日期是否为工作日。前面是通过百度查询，我倒是可以用 requests 自动查询，但程序又得依赖互联网，最好有个离线版的。库 workalendar（https://github.com/peopledoc/workalendar ）挺强大的，可处理大部份国家、2099 年前的节假日，但它只识别假日的第一天、无法识别结束日期：
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/workalendar 无法识别节假日结束日期.png" alt=""/><br>
 </div>
-你看，五一劳动节节，5.1 正确识别出不是工作日，但 5.2 就错了；另一个库 chinese-calendar（https://github.com/LKI/chinese-calendar），可以很好地支撑我的需求，唯一问题是它每年需要手工更新：
+你看，五一劳动节节，5.1 正确识别出不是工作日，但 5.2 就错了；另一个库 chinese-calendar（https://github.com/LKI/chinese-calendar ），可以很好地支撑我的需求，唯一问题是它每年需要手工更新：
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/chinese_calendar 正确识别工作日.png" alt=""/><br>
 </div>
