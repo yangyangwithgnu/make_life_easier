@@ -1,14 +1,10 @@
 
 <h1 align="center">油票助手</h1>
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/bypass_disablefunc_via_LD_PRELOAD/blob/master/bruce_lee.jpg" alt=""/><br>
-</div>
 <hr />
-
 
 的确，我一直缺个秘书！
 
-# 故事缘起
+### 故事缘起
 
 每个季度单位允许我们定额报销一次交通费，只要把加油发票按要求粘贴到报销底单就行。我大概要作几步操作：检查电子发票有效性、调整 PDF 版电子发票尺寸、已调好尺寸的电子发票转为 PNG 版、打印 PNG 版电子发票、打印报销底单、将 PNG 电子发票粘贴至报销底单的合适区域、填写底单信息，这样七步也仅仅完成一张发票的处理，我有 15 张发票，生活艰辛！
 
@@ -23,7 +19,7 @@
 
 再如，填报底单信息。内容及用途要填写"车辆运行费"，普通发票张数填写"1"，普通发票金额按实填报，经办人写本人"南门张学友"，15 张底单啊，把我累得不行了。
 
-## 命令辅助
+### 命令辅助
 
 我琢磨这些繁琐操作或许能让计算机代劳。试试看。
 
@@ -74,7 +70,7 @@ convert -font '/home/yangyang/.local/share/fonts/liguofu.ttf' -pointsize 39 -ann
 convert /path/to/expenses_img/*.png -quality 100 final.pdf
 其中，-quality 指定转换质量为 100% 保真。 
 
-脚本自动化
+### 脚本自动化
 
 虽然前面有命令辅助处理发票，但仍需我的指导和看管，这不是我的预期，计算机就应该替我做完绝大部分事，我，最多打开、打印一个 PDF。嗯，得用代码把各个独立的命令串联起来，最好的命令粘合剂的语言理当 python，对标前面命令辅助实现的各步骤，看看 python 如何帮我实现自动化。
 
@@ -96,7 +92,7 @@ python 启用外部命令的方式很多，个人偏好 subprocess.check_call()�
 1）细化销售方是否为成都市内加油站的判断规则；
 2）增加校验是否为正规发票。
 
-生活理应美好 - make life easier :-)
+生活理应美好，make life easier :-)
 
 
 
