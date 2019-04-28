@@ -32,7 +32,7 @@
 我琢磨这些繁琐操作或许能让计算机代劳。试试看。
 
 第一步，提取电子发票中的文字信息。所幸原始电子发票是文本版 PDF，而非扫描版，让我可以选择一款钟意的工具，轻松提取文字版 PDF 中的文字信息，poppler-utils（https://poppler.freedesktop.org/ ）就很不错，基于老牌开源库 xpdf 开发的一款 PDF 处理套件，ubuntu 安装：
-```bash
+```shell
 sudo apt install poppler-utils poppler-data -y
 ```
 之后系统上就有了多个独立工具，比如，将 PDF 转换为文本的工具 pdftotext、转换为图片的 pdftoppm，将多个 PDF 合并成单个的 pdfunite、反之单个拆分成多个的 pdfseparate，提取 PDF 元数据的 pdfinfo、提取内嵌文件的 pdfdetach，总之，装上就赚到。
@@ -71,22 +71,32 @@ composite -geometry +60+120 （未知加油站）160.png bottom_sheet.bmp expens
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/李国夫手写体.png" alt=""/><br>
 </div>
 下载安装好这款字体之后，找到它的安装路径：
+```shell
 yangyang@gnu:~$ fc-list | grep -i liguofu
 /home/yangyang/.local/share/fonts/liguofu.ttf: liguofu:style=Regular
+```
 
 要想在"内容及用途"模拟手工签写"车辆运行费"，只需用 convert 在图片上适当位置用手写体输出文本即可。填写内容及用途：
+```shell
 convert -font '/home/yangyang/.local/share/fonts/liguofu.ttf' -pointsize 26 -annotate +968+96 '车辆运行费' expenses0.png expenses1.png
+```
 其中，-annotate 指定输出文本的坐标位置。效果如下：
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/已写内容及用途的报销单.png" alt=""/><br>
 </div>
 
-填写普通发票张数1：
+填写普通发票张数 1：
+```shell
 convert -font '/home/yangyang/.local/share/fonts/liguofu.ttf' -pointsize 35 -annotate +983+228 '1' expenses1.png expenses2.png
+```
 填写普通发票金额 160：
+```shell
 convert -font '/home/yangyang/.local/share/fonts/liguofu.ttf' -pointsize 27 -annotate +978+256 '160' expenses2.png expenses3.png
+```
 填写经办人南门张学友：
+```shell
 convert -font '/home/yangyang/.local/share/fonts/liguofu.ttf' -pointsize 39 -annotate +990+580 '南门张学友' expenses3.png expense.png
+```
 整体效果：
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/报销单.png" alt=""/><br>
