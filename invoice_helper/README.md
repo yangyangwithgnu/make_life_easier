@@ -38,7 +38,9 @@ sudo apt install poppler-utils poppler-data -y
 之后系统上就有了多个独立工具，比如，将 PDF 转换为文本的工具 pdftotext、转换为图片的 pdftoppm，将多个 PDF 合并成单个的 pdfunite、反之单个拆分成多个的 pdfseparate，提取 PDF 元数据的 pdfinfo、提取内嵌文件的 pdfdetach，总之，装上就赚到。
 
 执行如下命令：
+```shell
 pdftotext （未知加油站）160.pdf
+```
 将电子发票中的文本信息提取到同目录下的 （未知加油站）160.txt 中：
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/提取电子发票中的文本信息.png" alt=""/><br>
@@ -47,7 +49,9 @@ pdftotext （未知加油站）160.pdf
 第二步，校验发票是否满足报销要求。虽然从 PDF 提取出的文本信息不那么工整，但报销要求相关的几个要素能以结构化的形式出现。开票日期，提取 "开票日期: 2019 年02 月27 日"，查询百度，确认是否为工作日；购买方名称，全文搜索确认是否存在关键字 "中国xx集团四川有限公司"；发票金额，提取关键字 "(小写)" 随后的数字，确认是否不大于 1000。如果三个条件均为真，那么该张发票可报销。
 
 第三步，PDF 版发票转换为 PNG 版。为了便于后续操作，先生成图片版电子发票，前面提过的 pdftoppm 派上用场了：
+```shell
 pdftoppm -png -scale-to 900 （未知加油站）160.pdf > （未知加油站）160.png
+```
 其中，-scale-to 选项设定 PDF 文档的水平边和垂直边较长者的像素，如，电子发票通常是横向排版，
 水平边较长，那么，-scale-to 900 就设定转换的图片水平为 900 像素、垂直边长自适应。
 
@@ -58,7 +62,9 @@ pdftoppm -png -scale-to 900 （未知加油站）160.pdf > （未知加油站）
 扯远了，ImageMagick 是 web 系统广泛使用的图片处理套件，包含叠加图片的 composite、加工图片的 convert，以及其他命令。<br />
 
 要达到粘贴的效果，也就要进行图片叠加操作，composite 很适合：
+```shell
 composite -geometry +60+120 （未知加油站）160.png bottom_sheet.bmp expenses0.png
+```
 其中，-geometry 设定发票图片相较左上角的偏移位置。效果如下：
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/已贴票的报销单.png" alt=""/><br>
@@ -71,6 +77,7 @@ composite -geometry +60+120 （未知加油站）160.png bottom_sheet.bmp expens
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/李国夫手写体.png" alt=""/><br>
 </div>
 下载安装好这款字体之后，找到它的安装路径：
+
 ```shell
 yangyang@gnu:~$ fc-list | grep -i liguofu
 /home/yangyang/.local/share/fonts/liguofu.ttf: liguofu:style=Regular
