@@ -33,7 +33,7 @@ font_path = '/home/yangyang/.local/share/fonts/liguofu.ttf'
 for valid_invoice in valid_invoices:
     invoice_pdf_name = os.path.basename(valid_invoice.getPath())
     print('\t', invoice_pdf_name, 'processing...', end=' ', flush=True)
-    expen = expenses.Expenses(valid_invoice.getPath(), bottom_sheet_path, font_path, str(int(float((valid_invoice.getAmount())))))
+    expenses.Expenses(valid_invoice.getPath(), bottom_sheet_path, font_path, str(int(float((valid_invoice.getAmount())))))
     print('done')
 
 # 将多张图片转换为 PDF 并合并为单个文件，以便一次性打印
