@@ -1,17 +1,23 @@
 import os
+import sys
 import glob
 import invoice
 import expenses
 import subprocess
     
 
+invoices_pdf_path = sys.argv[1]
+bottom_sheet_path = sys.argv[2]
+if not (os.path.exists(invoices_pdf_path) and os.path.exists(bottom_sheet_path)):
+    print('usage:\n\tpython3 invoice_helper.py /path/to/invoices /path/to/bottom_sheet')
+    sys.exit(os.EX_USAGE)
+
 # 校验发票报销条件
 print('step0. check invoices availability:', flush=True)
-invoices_pdf_path = '/data/computer/practice/make_life_easier/invoice_helper/test_invoice/*.pdf'
 valid_invoice_cnt = 0  # 有效 PDF 数量
 valid_amount_total_int = 0  # 有效 PDF 金额
 valid_invoices = list()
-for invoice_pdf_path in (glob.glob(invoices_pdf_path)):
+for invoice_pdf_path in (glob.iglob(os.path.join(invoices_pdf_path, '*.pdf'))):
     invoice_pdf_name = os.path.basename(invoice_pdf_path)
     print('\t', invoice_pdf_name, 'processing...', end=' ', flush=True)
     invoice_ = invoice.Invoice(invoice_pdf_path)
@@ -28,7 +34,6 @@ print(F'\tvalid invoices {valid_invoice_cnt}, valid amount total ￥{valid_amoun
 # 生成报销单
 print()
 print('step1. create expenses:', flush=True)
-bottom_sheet_path = '/data/computer/practice/make_life_easier/invoice_helper/bottom_sheet.bmp'
 font_path = '/home/yangyang/.local/share/fonts/liguofu.ttf'
 for valid_invoice in valid_invoices:
     invoice_pdf_name = os.path.basename(valid_invoice.getPath())
@@ -39,15 +44,14 @@ for valid_invoice in valid_invoices:
 # 将多张图片转换为 PDF 并合并为单个文件，以便一次性打印
 print()
 print('step2. create finally printable expense PDF file:', end=' ', flush=True)
-invoices_dir_path = os.path.dirname(invoices_pdf_path)
-final_pdf_path = os.path.join(invoices_dir_path, 'final.pdf')
-subprocess.check_call(F'convert {os.path.join(invoices_dir_path, "*.png")} -quality 100 {final_pdf_path}', shell=True)
+final_pdf_path = os.path.join(invoices_pdf_path, 'final.pdf')
+subprocess.check_call(F'convert {os.path.join(invoices_pdf_path, "*.png")} -quality 100 {final_pdf_path}', shell=True)
 print('done.')
 
 # 删除报销单图片
 print()
 print('step3. delete tmp images:', end=' ', flush=True)
-for expense_img_path in (glob.glob(os.path.join(invoices_dir_path, "*.png"))):
+for expense_img_path in (glob.glob(os.path.join(invoices_pdf_path, "*.png"))):
     os.remove(expense_img_path)
 print('done.')
 

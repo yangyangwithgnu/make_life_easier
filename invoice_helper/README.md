@@ -1,11 +1,11 @@
-<h1 align="center">油票助手</h1>
+<h1 align="center">油票女秘书</h1>
 
 
-的确，我一直缺个秘书！
+的确，我一直缺个（女）秘书！
 
 ### 事情缘起
 
-每个季度单位允许我们定额报销一次交通费，只要把加油发票按要求粘贴到报销底单就行。我大概要作几步操作：检查电子发票有效性、调整 PDF 版电子发票尺寸、已调好尺寸的电子发票转为 PNG 版、打印 PNG 版电子发票、打印报销底单、将 PNG 电子发票粘贴至报销底单的合适区域、填写底单信息，这样七步也仅仅完成一张发票的处理，我有 15 张发票，生活艰辛！
+每个季度单位允许我们报销一次交通费，只要把加油发票按要求粘贴到报销底单就行。我大概要作几步操作：检查电子发票有效性、调整 PDF 版电子发票尺寸、已调好尺寸的电子发票转为 PNG 版、打印 PNG 版电子发票、打印报销底单、将 PNG 电子发票粘贴至报销底单的合适区域、填写底单信息，这样七步也仅仅完成一张发票的处理，我有 15 张发票，生活艰辛！
 
 我举几个例子，你随便感受下。
 
@@ -121,7 +121,7 @@ convert /path/to/expenses_img/*.png -quality 100 final.pdf
 
 虽然前面有命令辅助处理发票，但仍需我的指导和看管，这不是我的预期，计算机就应该替我做完绝大部分事，我，最多打开、打印一个 PDF。嗯，得用代码把各个独立的命令串联起来，最好的命令粘合剂的语言理当 python，对标前面命令辅助实现的各步骤，看看 python 如何帮我实现自动化。
 
-说个题外话，刚开始，从编译项目分发、性能提升考虑，我趋向用纯 python 来操纵 PDF 而非第三方命令，当前在维的、功能完善的 PDF 开源库有两个 PyPDF2（https://github.com/mstamy2/PyPDF2/ ）、pdfrw（https://github.com/pmaupin/pdfrw ），经过实际考察，若是英文 PDF，处理效果不错，但中文就无解了，所以，退而其次，任采用调用三方命令，python 作粘合剂。其中几个关键点，简单聊下。
+说个题外话，刚开始，从编译项目分发、性能提升考虑，我趋向用纯 python 来操纵 PDF 而非第三方命令，当前在维的、功能完善的 PDF 开源库有两个 PyPDF2（https://github.com/mstamy2/PyPDF2/ ）、pdfrw（https://github.com/pmaupin/pdfrw ），经过实际考察，若是英文 PDF，处理效果不错，但中文就无解了，所以，退而其次，仍采用调用三方命令，python 作粘合剂。其中几个关键点，简单聊下。
 
 提取开票日期中的数字部分。信息 "开票日期: 2019 年02 月27 日" 中的年月日，我以非数字作为分隔符，即可提取数字部分：
 <div align="center">
@@ -144,18 +144,24 @@ python 启用外部命令的方式很多，个人偏好 subprocess.check_call()�
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/用 subprocess.check_call() 启动外部命令.png" alt=""/><br>
 </div>
 
-全自动化生成最终报销单文件：
+### make life easier
+
+以后，单位再让我贴油票，只需两步：第一步，运行
+```
+python3 invoice_helper.py /path/to/invoices /path/to/bottom_sheet_file
+```
+生成自动生成最终报销单文件：
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/操作.gif" alt=""/><br>
 </div>
-报销单文件效果：
+第二步，打印一次报销单文件：
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/最终报销单.gif" alt=""/><br>
 </div>
 
+好了，这下世界清净了。
+
 后续有两个小问题找时间优化：
 1）细化销售方是否为成都市内加油站的判断规则；
 2）增加校验是否为正规发票。
-
-生活理应美好，make life easier :-)
 
