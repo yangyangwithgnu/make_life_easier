@@ -55,9 +55,9 @@ pdftoppm -png -scale-to 900 （未知加油站）160.pdf > （未知加油站）
 水平边较长，那么，-scale-to 900 就设定转换的图片水平为 900 像素、垂直边长自适应。
 
 第四步，将电子发票图片覆盖至粘贴底单上。ImageMagick，我的老朋友了，两三年前它用魔图漏洞给我带来了无数个肉鸡：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/ImageMagick 漏洞列表.png" alt=""/><br>
-</div>
+<p align="center">
+  <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/ImageMagick 漏洞列表.png">
+</p>
 扯远了，ImageMagick 是 web 系统广泛使用的图片处理套件，包含叠加图片的 composite、加工图片的 convert，以及其他命令。<br />
 
 要达到粘贴的效果，也就要进行图片叠加操作，composite 很适合：
