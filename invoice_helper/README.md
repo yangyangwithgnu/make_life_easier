@@ -9,7 +9,9 @@
 我举几个例子，你随便感受下。
 
 比如，检查电子发票有效性。在这个环保时代，油发票肯定是电子档 PDF 的，大概长这样子：
-<img align="center" width="100" height="100" src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/电子发票.png">
+<p align="center">
+  <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/电子发票.png">
+</p>
 有四条件必须满足要求才能报销：一是，开票日期必须是当年的工作日，不能是周末、不能是节假日；二是，购买方名称必须是本单位，"中国xx集团四川有限公司"；三是，销售方必须为成都市的加油站；四是，发票金额不能超过 ￥1000。二三四点倒容易，眼睛扫下就能判断，第一点的工作日判断就麻烦了，开票时间既不是周末、也不是假期，系统上的日期工具可以查看是否为周末但看不到节假日信息，所以我只能问百度，手工查看 20190124 是否为工作日：
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/百度节假日查询.png" alt=""/><br>
