@@ -1,7 +1,7 @@
-import os
 import re
 import enum
 import datetime
+import platform
 import subprocess
 import chinese_calendar
 
@@ -14,20 +14,27 @@ class Invoice:
         YanchangShell = 1   # 延长壳牌
         Unkown = 2          # 未知
 
+    @staticmethod
+    def ___convertPdf2Txt(pdf_path: str) -> str:
+        # 执行外部命令 pdftotxt，提取 PDF 中的文本
+        if platform.system() == 'Linux':
+            return(subprocess.check_output(F'pdftotext "{pdf_path}" -', shell=True).decode('utf-8'))
+        elif platform.system() == 'Windows':
+            return(subprocess.check_output(F'pdftotext.exe -q "{pdf_path}" -', shell=True, cwd='xpdf-utils').decode('gbk'))
+        else:
+            raise(Exception('ERROR! unkown OS.'))
+
     def __init__(self, pdf_path: str):
         
         self._pdf_path = pdf_path
         
-        # 执行外部命令 pdftotxt，提取 PDF 中的文本内容
-        subprocess.check_call(F'pdftotext {self._pdf_path}', shell=True)
-        txt_path = F'{os.path.splitext(self._pdf_path)[0]}.txt'
-        with open(txt_path) as f:
-            self._txt = f.read()
-        os.remove(txt_path)
+        # 提取 PDF 中的文本
+        self._txt = Invoice.___convertPdf2Txt(pdf_path)
         
         # 粗略确认是否为油发票
-        if '成品油' not in self._txt:
-            raise(Exception(F'ERROR! {self._pdf_path} is not oil invoice. '))
+        self._b_oil_invoice = '成品油' in self._txt
+        if not self._b_oil_invoice:
+            return
         
         # 识别销售方
         PETERO_CHINA_KW = '中国石油'
@@ -49,7 +56,7 @@ class Invoice:
         begin_idx = self._txt.index(KEYOWRD)
         end_idx = self._txt.index('\n', begin_idx)
         line = self._txt[begin_idx:end_idx]
-        (self._year, self._month, self._day) = filter(None, re.split(R'\D', line))  # 提取年月日，以非数字作为分隔符，等同于 R'[^0-9]'
+        (self._year, self._month, self._day, *_) = filter(None, re.split(R'\D', line))  # 提取年月日，以非数字作为分隔符，等同于 R'[^0-9]'
         
         # 开票日期是否为工作日
         self._b_workday = chinese_calendar.is_workday(datetime.date(int(self._year), int(self._month), int(self._day)))
@@ -74,6 +81,9 @@ class Invoice:
             end_idx = self._txt.index('\n', begin_idx)
         line = self._txt[begin_idx:end_idx]
         (self._amount, *_) = filter(None, re.split(R'[^0-9.]', line))
+
+    def isValidOilInvoice(self):
+        return(self._b_oil_invoice)
 
     def getPath(self):
         return(self._pdf_path)
@@ -105,4 +115,5 @@ class Invoice:
         return(KEYOWRD in self._txt)
 
     def isValid(self):
-        return(self.isValidDate() and self.isValidAmount() and self.isValidBuyer())
+        return(self.isValidOilInvoice() and self.isValidDate() and self.isValidAmount() and self.isValidBuyer())
+

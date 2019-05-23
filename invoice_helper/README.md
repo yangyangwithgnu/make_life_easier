@@ -150,7 +150,7 @@ python 启用外部命令的方式很多，个人偏好 subprocess.check_call()�
 ```
 python3 invoice_helper.py /path/to/invoices /path/to/bottom_sheet_file
 ```
-生成自动生成最终报销单文件：
+自动生成最终报销单文件：
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/操作.gif" alt=""/><br>
 </div>

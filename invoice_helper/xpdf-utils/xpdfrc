@@ -1,0 +1,44 @@
+#----- display fonts
+
+# These map the Base-14 fonts to the Type 1 fonts that ship with
+# ghostscript.  You'll almost certainly want to use something like
+# this, but you'll need to adjust this to point to wherever
+# ghostscript is installed on your system.  (But if the fonts are
+# installed in a "standard" location, xpdf will find them
+# automatically.)
+
+fontFile Symbol			.\\ps-fonts\s050000l.pfb
+fontFile ZapfDingbats		.\\ps-fonts\d050000l.pfb
+
+# If you need to display PDF files that refer to non-embedded fonts,
+# you should add one or more fontDir options to point to the
+# directories containing the font files.  Xpdf will only look at .pfa,
+# .pfb, .ttf, and .ttc files in those directories (other files will
+# simply be ignored).
+
+fontDir		.\\non-embedded-font
+
+#----- text output control
+
+# Choose a text encoding for copy-and-paste and for pdftotext output.
+# The Latin1, ASCII7, and UTF-8 encodings are built into Xpdf.  Other
+# encodings are available in the language support packages.
+
+textEncoding		GBK
+
+#----- misc settings
+
+# Enable FreeType, and anti-aliased text.
+
+enableFreeType		yes
+antialias		yes
+vectorAntialias		yes
+
+#----- begin Chinese Simplified support package (2011-sep-02)
+
+cidToUnicode	Adobe-GB1	.\\chinese-simplified\Adobe-GB1.cidToUnicode
+unicodeMap	ISO-2022-CN	.\\chinese-simplified\ISO-2022-CN.unicodeMap
+unicodeMap	EUC-CN		.\\chinese-simplified\EUC-CN.unicodeMap
+unicodeMap	GBK		.\\chinese-simplified\GBK.unicodeMap
+cMapDir		Adobe-GB1	.\\chinese-simplified\CMap
+toUnicodeDir			.\\chinese-simplified\CMap
