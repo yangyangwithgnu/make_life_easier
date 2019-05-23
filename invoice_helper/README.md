@@ -13,9 +13,9 @@
   <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/电子发票.png">
 </p>
 有四条件必须满足要求才能报销：一是，开票日期必须是当年的工作日，不能是周末、不能是节假日；二是，购买方名称必须是本单位，"中国xx集团四川有限公司"；三是，销售方必须为成都市的加油站；四是，发票金额不能超过 ￥1000。二三四点倒容易，眼睛扫下就能判断，第一点的工作日判断就麻烦了，开票时间既不是周末、也不是假期，系统上的日期工具可以查看是否为周末但看不到节假日信息，所以我只能问百度，手工查看 20190124 是否为工作日：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/百度节假日查询.png" alt=""/><br>
-</div>
+<p align="center">
+  <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/百度节假日查询.png">
+</p>
 你建议我只在工作日加油（我工作日都很加油：），那样开票时间就不会有问题了。是的，你很贤慧，但平时我很少开车，发票基本靠三朋四友捐赠的（鸣谢两位票友：文武兼备的勇哥、美丽与智慧并存的静静），既然是帮忙，又怎么好过多要求别人呢。
 
 又如，调整电子发票尺寸。底单大概如下模样：
