@@ -57,7 +57,7 @@ composite -geometry +60+120 （未知加油站）160.png bottom_sheet.bmp expens
 
 第五步，模拟手工笔迹填写底单信息。填写信息，实际上就是在图片指定位置上添加文字，用手写体模拟即可。
 
-网上找了一圈，李国夫手写体和我的笔迹挺像的：
+网上找了一圈，李国夫手写体和我的笔迹挺像的：  
 ![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/李国夫手写体.png)  
 下载安装好这款字体之后，找到它的安装路径：
 ```shell
