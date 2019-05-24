@@ -13,11 +13,11 @@
   <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/电子发票.png">
 </p>
 报销时必须满足四个条件：一是，开票日期得是当年的工作日，不能是周末、不能是节假日；二是，购买方名称必须是本单位，"中国xx集团四川有限公司"；三是，销售方必须为成都市的加油站；四是，发票金额不能超过 ￥1000。二三四点倒容易，眼睛扫下就能判断，第一点的工作日判断就麻烦了，开票时间既不是周末、也不是节假日，操作系统上的日期工具倒是可以查看周末但看不到节假日，所以我只能问百度，手工查看 20190124 是否为工作日：
-![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/百度节假日查询.png)
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/%E7%99%BE%E5%BA%A6%E8%8A%82%E5%81%87%E6%97%A5%E6%9F%A5%E8%AF%A2.png)
 你建议我只在工作日加油（工作日我很加油 :-），那样开票时间就不会有问题。是的，你很贤慧，但平时我很少开车，发票基本靠三朋四友捐赠（鸣谢两位票友：文武兼备的勇哥、美丽与智慧并存的静静），既然是帮忙，又怎么好过多要求别人呢。
 
 又如，调整电子发票尺寸。底单大概如下模样：
-![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/%E7%99%BE%E5%BA%A6%E8%8A%82%E5%81%87%E6%97%A5%E6%9F%A5%E8%AF%A2.png)
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/%E7%A5%A8%E6%8D%AE%E7%B2%98%E8%B4%B4%E5%BA%95%E5%8D%95.png)
 油发票应该粘贴至高亮区域。底单为 A4 大小，电子发票默认打印出来也是 A4 尺寸，直接粘贴肯定会覆盖掉底单上部和右部的信息，所以，我先得把 PDF 版电子发票按 60% 显示，再按此比例截图成 PNG 版电子发票，然后打印粘贴。
 
 再如，填报底单信息。内容及用途要填写 车辆运行费，普通发票张数填写 1，普通发票金额按实填报，经办人写本人 南门张学友，16 张底单啊，把我累得不行了。
