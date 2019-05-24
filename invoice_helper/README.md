@@ -35,9 +35,7 @@ sudo apt install poppler-utils poppler-data -y
 pdftotext （未知加油站）160.pdf
 ```
 将电子发票中的文本信息提取到同目录下的 （未知加油站）160.txt 中：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/提取电子发票中的文本信息.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/提取电子发票中的文本信息.png)  
 第二步，校验发票是否满足报销要求。虽然从 PDF 提取出的文本信息不那么工整，但报销要求相关的几个要素都还是能以结构化的形式呈现。开票日期，提取 开票日期: 2019 年02 月27 日，查询百度，确认是否为工作日；购买方名称，全文搜索确认是否存在关键字 中国xx集团四川有限公司；发票金额，提取关键字 (小写) 随后的数字，确认是否不大于 1000。如果三个条件均为真，那么该张发票可报销。
 
 第三步，PDF 版发票转换为 PNG 版。为了便于后续操作，先生成图片版电子发票，前面提过的 pdftoppm 派上用场了：
@@ -55,6 +53,7 @@ pdftoppm -png -scale-to 900 （未知加油站）160.pdf > （未知加油站）
 composite -geometry +60+120 （未知加油站）160.png bottom_sheet.bmp expenses0.png
 ```
 其中，-geometry 设定发票图片从左上角的偏移位置。效果如下：
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png)  
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/已贴票的报销单.png" alt=""/><br>
 </div>
@@ -62,6 +61,7 @@ composite -geometry +60+120 （未知加油站）160.png bottom_sheet.bmp expens
 第五步，模拟手工笔迹填写底单信息。填写信息，实际上就是在图片指定位置上添加文字，用手写体模拟即可。
 
 网上找了一圈，李国夫手写体和我的笔迹挺像的：
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png)  
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/李国夫手写体.png" alt=""/><br>
 </div>
@@ -76,6 +76,7 @@ yangyang@gnu:~$ fc-list | grep -i liguofu
 convert -font '/home/yangyang/.local/share/fonts/liguofu.ttf' -pointsize 26 -annotate +968+96 '车辆运行费' expenses0.png expenses1.png
 ```
 其中，-annotate 指定输出文本的坐标位置。效果如下：
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png)  
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/已写内容及用途的报销单.png" alt=""/><br>
 </div>
@@ -93,6 +94,7 @@ convert -font '/home/yangyang/.local/share/fonts/liguofu.ttf' -pointsize 27 -ann
 convert -font '/home/yangyang/.local/share/fonts/liguofu.ttf' -pointsize 39 -annotate +990+580 '南门张学友' expenses3.png expense.png
 ```
 完成信息填写：
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png)  
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/报销单.png" alt=""/><br>
 </div>
@@ -111,10 +113,12 @@ convert /path/to/expenses_img/*.png -quality 100 final.pdf
 你知道，我移居 linux 多年，只要用 bash 脚本把前面各个独立命令串联起来，释放双手的目的就达到了，但考虑到 win 用户，具体开发功能时，有 win 版的命令则直接调用命令，没有的则用 python 实现。在前面命令行推演实现半自动的基础上，python 实现全自动并不困难，其中几个关键点，简单聊下。
 
 关键点一，python 启用外部命令。python 执行系统命令的方式很多，个人偏好 subprocess.check_output()，它能关注到命令输出结果以及退出状态：
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png)  
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/执行系统命令.png" alt=""/><br>
 </div>
 另外，路径或文件名相关的命令行参数，一定要带上引号，防止因文件名中含有空白字符导致命令执行失败：
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png)  
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/命令执行时应将路径放入引号中.png" alt=""/><br>
 </div>
@@ -134,21 +138,16 @@ doc.close()
 效果不理想，比如，本应连续出现的“开票日期：2019 年 03 月 03 日”却分隔为“开票日期”、“2019  03  03”、“年月日”，且散落在不同地方，这类非结构化文本，程序很难处理。所以，提取 PDF 文本的功能，我不得不用前面的 xpdf 套件中的 pdftotext 命令来实现。
 
 pdftotext 在 linux 下运行效果还不错，win 下不知道怎么样，试试看。到 https://www.xpdfreader.com/download.html 下载 win 版：
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png)  
 <div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/win 版 pdftotext.png" alt=""/><br>
 </div>
 运行看看：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/pdftotext 无法写入中文文件名.png" alt=""/><br>
-</div>
+![]("https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/pdftotext 无法写入中文文件名.png")  
 报错“无法打开文件”，怀疑 pdftotext 无法写入中文文件名，变通下，用 - 替换文件名，不输出至文件而是直接显示：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/缺少语言支持包.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/缺少语言支持包.png)  
 新问题又来了，从描述来看，好像缺少中文语言支持，找帮助文档看看：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/xpdf 文档.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/xpdf%20%E6%96%87%E6%A1%A3.png)  
 xpdfrc.txt 是配置说明、sample-xpdfrc 是配置样例，按指导，在桌面新建文件夹 xpdf-utils/，xpdf-utils/ 中新建文本 xpdfrc，内容如下：
 ```
 #----- display fonts
@@ -198,31 +197,21 @@ toUnicodeDir			.\\chinese-simplified\CMap
 ```
 
 配置项 fontFile 用于指定 PS 字体路径。PS 字体是按 PostScript 页面描述语言（PDL）规则定义的字体，属于矢量字体，常用的 Symbol 和 ZapfDingbats 两种 PS 字体可在页面下载：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/PS 向量字体.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/PS%20%E5%90%91%E9%87%8F%E5%AD%97%E4%BD%93.png)  
 在 xpdf-utils/ 中新建文件夹 ps-fonts/，将下载回来的 Symbol 和 ZapfDingbats 两种 PS 字体放入其中。
 
 配置项 fontDir 用于指定非内嵌字体（non-embedded）。除了矢量字体，PDF 还会用到像素字体（比如系统自带的宋体），由于像素字体体积较大，PDF 文档并未将其嵌入文档内，需要单独提供。在 xpdf-utils/ 中新建文件夹 non-embedded-font/，将 C:\Windows\Fonts 中任一简中字体（如 Microsoft YaHei Light.ttc）拷贝至 non-embedded-font/，运行 xpdf 套件中的任何工具时，只要出现类似如下报错：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/缺少外部字体.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/缺少外部字体.png)  
 在 non-embedded-font/ 中，将 Microsoft YaHei Light.ttc 字体拷贝两份，分别重命名为 AdobeKaitiStd-Regular.ttc 和 STSong-Light-UniGB-UCS2-H.ttc，类似，若有报错无法找到 foo 字体，拷贝Microsoft YaHei Light.ttc 并重命名 foo.ttc 即可。
 
 Chinese Simplified support package 中的配置项，用于设置简体中文支持包的路径。中文支持包下载：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/中文支持包.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/中文支持包.png)  
 解压后，将文件夹 xpdf-chinese-simplified/ 重命名为 chinese-simplified/，再移至 xpdf-utils/ 中，将 pdftotext.exe 和 pdftopng.exe 也复制至 xpdf-utils/ 中。
 
 xpdf-utils/ 完整目录结构如下：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/xpdf-utils 目录结构.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/xpdf-utils%20%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png)  
 运行试试，一切正常：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/pdftotext 运行正常.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/pdftotext%20%E8%BF%90%E8%A1%8C%E6%AD%A3%E5%B8%B8.png)  
 
 用 python 简单封装如下：
 ```python
@@ -237,19 +226,13 @@ def convertPdf2Txt(pdf_path: str) -> str:
 ```
 
 关键点三，提取开票日期中的数字部分。信息 "开票日期: 2019 年02 月27 日" 中的年月日，我以非数字作为分隔符，即可提取数字部分：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/%E6%8F%90%E5%8F%96%E6%97%A5%E6%9C%9F%E6%95%B0%E5%AD%97.png)  
 其中，正则的 [^0-9] 等同于 '\D'。
 
 关键点四，判断日期是否为工作日。前面是通过百度查询，我倒是可以用 requests 自动查询，但程序又得依赖互联网，最好有个离线版的。workalendar 库（https://github.com/peopledoc/workalendar ）挺强大的，可处理大部份国家、2099 年前的节假日，但它只识别假日的第一天、无法识别结束日期：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/workalendar%20%E6%97%A0%E6%B3%95%E8%AF%86%E5%88%AB%E8%8A%82%E5%81%87%E6%97%A5%E7%BB%93%E6%9D%9F%E6%97%A5%E6%9C%9F.png)  
 你看，五一劳动节节，5.1 正确识别出不是工作日，但 5.2 就错了；另一个库 chinese-calendar（https://github.com/LKI/chinese-calendar ），可以很好地支撑我的需求，唯一问题是它每年需要手工更新：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/chinese_calendar%20%E6%AD%A3%E7%A1%AE%E8%AF%86%E5%88%AB%E5%B7%A5%E4%BD%9C%E6%97%A5.png)  
 2019 年的五一假期调整至四号，chinese-calendar 识别效果理想。综合考虑，选用 chinese-calendar。
 
 关键点五，PDF 转图片、图片叠加、图片添加文字、图片转 PDF、PDF 合并。
@@ -299,9 +282,7 @@ all_in_one.close()
 关键点六，win 下程序分发。图形界面和开箱即用是 win 用户的最大诉求。
 
 发票助手是个简单应用，无需复杂的图像界面，所以我优选 python 自带 GUI 库 tkinter 来实现。十来行代码，效果如下：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/win 下图形界面效果.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/win%20%E4%B8%8B%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E6%95%88%E6%9E%9C.png)  
 注意，invoice_helper_gui.exe 所在路径不能出现中文。
 
 另外，发票助手及其三方库，我得打包进单个的可执行程序，这样才能满足开箱即用。我通过pyinstaller（https://github.com/pyinstaller/pyinstaller ）将 *.py 打包为 *.exe：
@@ -312,25 +293,17 @@ pyinstaller --noconsole --onefile invoice_helper_gui.py
 pyinstaller --noconsole --onedir invoice_helper_gui.py
 ```
 最终目录结构如下：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/win 应用分发目录结构.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/win%20%E5%BA%94%E7%94%A8%E5%88%86%E5%8F%91%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png)  
 
 ### make life easier
 
 以后，单位再让我贴油票，只需运行发票助手脚本 invoice_helper.py：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/操作 CLI 版.gif" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/%E6%93%8D%E4%BD%9C%20CLI%20%E7%89%88.gif)  
 或者，运行 GUI 版的：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/操作 GUI 版.gif" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/%E6%93%8D%E4%BD%9C%20GUI%20%E7%89%88.gif)  
 
 自动生成最终报销单文件，直接打印即可：
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/最终报销单.gif" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/最终报销单.gif)  
 
 这下，世界清净了。
 
