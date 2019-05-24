@@ -9,6 +9,8 @@
 自动生成最终报销单文件，直接打印即可：  
 ![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/最终报销单.gif)  
 
+详见 https://github.com/yangyangwithgnu/make_life_easier/tree/master/invoice_helper
+
 #### TODO
 
 todo list

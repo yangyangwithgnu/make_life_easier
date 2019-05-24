@@ -264,7 +264,7 @@ all_in_one.close()
 ![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/win%20%E4%B8%8B%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E6%95%88%E6%9E%9C.png)  
 注意，invoice_helper_gui.exe 所在路径不能出现中文。
 
-另外，发票助手及其三方库，我得打包进单个的可执行程序，这样才能满足开箱即用。我通过pyinstaller（https://github.com/pyinstaller/pyinstaller ）将 *.py 打包为 *.exe：
+另外，发票助手及其三方库，我得打包进单个的可执行程序，这样才能满足开箱即用。我通过 pyinstaller（https://github.com/pyinstaller/pyinstaller ）将 *.py 打包为 *.exe：
 ```
 # 按单个 exe 分发
 pyinstaller --noconsole --onefile invoice_helper_gui.py
