@@ -9,12 +9,9 @@
 这些体力活儿挺麻烦的，我举几个例子，你随便感受下。
 
 比如，检查电子发票有效性。在这个环保时代，油发票肯定是电子档 PDF 的，大概长这样子：
-<p align="center">
-  <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/电子发票.png">
-</p>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/电子发票.png)
 报销时必须满足四个条件：一是，开票日期得是当年的工作日，不能是周末、不能是节假日；二是，购买方名称必须是本单位，"中国xx集团四川有限公司"；三是，销售方必须为成都市的加油站；四是，发票金额不能超过 ￥1000。二三四点倒容易，眼睛扫下就能判断，第一点的工作日判断就麻烦了，开票时间既不是周末、也不是节假日，操作系统上的日期工具倒是可以查看周末但看不到节假日，所以我只能问百度，手工查看 20190124 是否为工作日：
 ![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/%E7%99%BE%E5%BA%A6%E8%8A%82%E5%81%87%E6%97%A5%E6%9F%A5%E8%AF%A2.png)
-
 你建议我只在工作日加油（工作日我很加油 :-），那样开票时间就不会有问题。是的，你很贤慧，但平时我很少开车，发票基本靠三朋四友捐赠（鸣谢两位票友：文武兼备的勇哥、美丽与智慧并存的静静），既然是帮忙，又怎么好过多要求别人呢。
 
 又如，调整电子发票尺寸。底单大概如下模样：
