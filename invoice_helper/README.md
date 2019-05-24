@@ -30,7 +30,7 @@
 
 我琢磨这些繁琐操作或许能让计算机代劳。试试看。
 
-第一步，提取电子发票中的文字信息。所幸原始电子发票是文本版 PDF，而非扫描版，让我可以选择一款钟意的工具，轻松提取文字版 PDF 中的文字信息，poppler-utils（https://poppler.freedesktop.org/）就很不错，基于老牌开源库 xpdf 开发的一款 PDF 处理套件，ubuntu 安装：
+第一步，提取电子发票中的文字信息。所幸原始电子发票是文本版 PDF，而非扫描版，让我可以选择一款钟意的工具，轻松提取文字版 PDF 中的文字信息，poppler-utils（https://poppler.freedesktop.org/ ）就很不错，基于老牌开源库 xpdf 开发的一款 PDF 处理套件，ubuntu 安装：
 ```shell
 sudo apt install poppler-utils poppler-data -y
 ```
@@ -126,7 +126,7 @@ convert /path/to/expenses_img/*.png -quality 100 final.pdf
 </div>
 提醒下，脚本语言直接启用外部命令的场景中，很可能导致命令注入漏洞，即便用引号包裹了命令参数（引号闭合、引号转义），所以，该脚本切勿用于线上服务，只能用于本地程序！
 
-关键点二，提取 PDF 中的文字信息。当前在维的、功能完善的 PDF 开源库有三个：PyPDF2（https://github.com/mstamy2/PyPDF2/）、pdfrw（https://github.com/pmaupin/pdfrw）、PyMuPDF（https://github.com/pymupdf/PyMuPDF），从口碑来看，PyPDF2 最赞，但就中文支持度而言，PyMuPDF 最优。
+关键点二，提取 PDF 中的文字信息。当前在维的、功能完善的 PDF 开源库有三个：PyPDF2（https://github.com/mstamy2/PyPDF2/ ）、pdfrw（https://github.com/pmaupin/pdfrw ）、PyMuPDF（https://github.com/pymupdf/PyMuPDF ），从口碑来看，PyPDF2 最赞，但就中文支持度而言，PyMuPDF 最优。
 
 我尝试用 PyMuPDF 提取电子油票中的文本：
 ```
@@ -140,9 +140,21 @@ doc.close()
 效果不理想，比如，本应连续出现的“开票日期：2019 年 03 月 03 日”却分隔为“开票日期”、“2019  03  03”、“年月日”，且散落在不同地方，这类非结构化文本，程序很难处理。所以，提取 PDF 文本的功能，我不得不用前面的 xpdf 套件中的 pdftotext 命令来实现。
 
 pdftotext 在 linux 下运行效果还不错，win 下不知道怎么样，试试看。到 https://www.xpdfreader.com/download.html 下载 win 版：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/win 版 pdftotext.png" alt=""/><br>
+</div>
 运行看看：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/pdftotext 无法写入中文文件名.png" alt=""/><br>
+</div>
 报错“无法打开文件”，怀疑 pdftotext 无法写入中文文件名，变通下，用 - 替换文件名，不输出至文件而是直接显示：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/缺少语言支持包.png" alt=""/><br>
+</div>
 新问题又来了，从描述来看，好像缺少中文语言支持，找帮助文档看看：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/xpdf 文档.png" alt=""/><br>
+</div>
 xpdfrc.txt 是配置说明、sample-xpdfrc 是配置样例，按指导，在桌面新建文件夹 xpdf-utils/，xpdf-utils/ 中新建文本 xpdfrc，内容如下：
 ```
 #----- display fonts
@@ -192,16 +204,31 @@ toUnicodeDir			.\\chinese-simplified\CMap
 ```
 
 配置项 fontFile 用于指定 PS 字体路径。PS 字体是按 PostScript 页面描述语言（PDL）规则定义的字体，属于矢量字体，常用的 Symbol 和 ZapfDingbats 两种 PS 字体可在页面下载：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/PS 向量字体.png" alt=""/><br>
+</div>
 在 xpdf-utils/ 中新建文件夹 ps-fonts/，将下载回来的 Symbol 和 ZapfDingbats 两种 PS 字体放入其中。
 
 配置项 fontDir 用于指定非内嵌字体（non-embedded）。除了矢量字体，PDF 还会用到像素字体（比如系统自带的宋体），由于像素字体体积较大，PDF 文档并未将其嵌入文档内，需要单独提供。在 xpdf-utils/ 中新建文件夹 non-embedded-font/，将 C:\Windows\Fonts 中任一简中字体（如 Microsoft YaHei Light.ttc）拷贝至 non-embedded-font/，运行 xpdf 套件中的任何工具时，只要出现类似如下报错：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/缺少外部字体.png" alt=""/><br>
+</div>
 在 non-embedded-font/ 中，将 Microsoft YaHei Light.ttc 字体拷贝两份，分别重命名为 AdobeKaitiStd-Regular.ttc 和 STSong-Light-UniGB-UCS2-H.ttc，类似，若有报错无法找到 foo 字体，拷贝Microsoft YaHei Light.ttc 并重命名 foo.ttc 即可。
 
 Chinese Simplified support package 中的配置项，用于设置简体中文支持包的路径。中文支持包下载：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/中文支持包.png" alt=""/><br>
+</div>
 解压后，将文件夹 xpdf-chinese-simplified/ 重命名为 chinese-simplified/，再移至 xpdf-utils/ 中，将 pdftotext.exe 和 pdftopng.exe 也复制至 xpdf-utils/ 中。
 
 xpdf-utils/ 完整目录结构如下：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/xpdf-utils 目录结构.png" alt=""/><br>
+</div>
 运行试试，一切正常：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/pdftotext 运行正常.png" alt=""/><br>
+</div>
 
 用 python 简单封装如下：
 ```python
@@ -216,16 +243,25 @@ def convertPdf2Txt(pdf_path: str) -> str:
 ```
 
 关键点三，提取开票日期中的数字部分。信息 "开票日期: 2019 年02 月27 日" 中的年月日，我以非数字作为分隔符，即可提取数字部分：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png" alt=""/><br>
+</div>
 其中，正则的 [^0-9] 等同于 '\D'。
 
-关键点四，判断日期是否为工作日。前面是通过百度查询，我倒是可以用 requests 自动查询，但程序又得依赖互联网，最好有个离线版的。库 workalendar（https://github.com/peopledoc/workalendar）挺强大的，可处理大部份国家、2099 年前的节假日，但它只识别假日的第一天、无法识别结束日期：
-你看，五一劳动节节，5.1 正确识别出不是工作日，但 5.2 就错了；另一个库 chinese-calendar（https://github.com/LKI/chinese-calendar），可以很好地支撑我的需求，唯一问题是它每年需要手工更新：
+关键点四，判断日期是否为工作日。前面是通过百度查询，我倒是可以用 requests 自动查询，但程序又得依赖互联网，最好有个离线版的。workalendar 库（https://github.com/peopledoc/workalendar ）挺强大的，可处理大部份国家、2099 年前的节假日，但它只识别假日的第一天、无法识别结束日期：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png" alt=""/><br>
+</div>
+你看，五一劳动节节，5.1 正确识别出不是工作日，但 5.2 就错了；另一个库 chinese-calendar（https://github.com/LKI/chinese-calendar ），可以很好地支撑我的需求，唯一问题是它每年需要手工更新：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png" alt=""/><br>
+</div>
 2019 年的五一假期调整至四号，chinese-calendar 识别效果理想。综合考虑，选用 chinese-calendar。
 
 关键点五，PDF 转图片、图片叠加、图片添加文字、图片转 PDF、PDF 合并。
 
 PyMuPDF 库可以轻松实现 PDF 转图片：
-```
+```python
 import fitz
 
 doc = fitz.open("（中石油）200.pdf")
@@ -236,21 +272,26 @@ doc.close()
 ```
 
 借助 pillow 进行图片叠加，模拟将电子发票图片至粘贴底单上的效果：
+```python
 from PIL import Image
 
 with Image.open('（中石油）200.png') as invoice_img, Image.open('bottom_sheet.jpg') as bottom_sheet_img:
     bottom_sheet_img.paste(invoice_img, (52, 99))
     bottom_sheet_img.save('expenses.png')
+```
 
 图片添加文字，再另存为 PDF：
+```python
 from PIL import Image, ImageFont, ImageDraw
 
 font = ImageFont.truetype('/data/computer/practice/make_life_easier/invoice_helper/res/liguofu.ttf', 32)
 with Image.open('/data/computer/practice/make_life_easier/invoice_helper/res/bottom_sheet.jpg') as img:
     ImageDraw.Draw(img).text((980, 555), '刘德华', font=font, fill=(0, 0, 0))
     img.save('mysmile.pdf', 'PDF', resolution=100)
+```
 
 PDF 合并：
+```python
 import fitz
 
 all_in_one = fitz.open()
@@ -259,36 +300,43 @@ all_in_one.insertPDF(fitz.open("2.pdf"))
 all_in_one.insertPDF(fitz.open("3.pdf"))
 all_in_one.save('all_in_one.pdf', pretty=True)
 all_in_one.close()
+```
 
 关键点六，win 下程序分发。图形界面和开箱即用是 win 用户的最大诉求。
 
 发票助手是个简单应用，无需复杂的图像界面，所以我优选 python 自带 GUI 库 tkinter 来实现。十来行代码，效果如下：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/win 下图形界面效果.png" alt=""/><br>
+</div>
 注意，invoice_helper_gui.exe 所在路径不能出现中文。
 
-另外，发票助手及其三方库，我得打包进单个的可执行程序，这样才能满足开箱即用。我通过pyinstaller（https://github.com/pyinstaller/pyinstaller）将 *.py 打包为 *.exe：
+另外，发票助手及其三方库，我得打包进单个的可执行程序，这样才能满足开箱即用。我通过pyinstaller（https://github.com/pyinstaller/pyinstaller ）将 *.py 打包为 *.exe：
+```python
 # 按单个 exe 分发
 pyinstaller --noconsole --onefile invoice_helper_gui.py
 # 按单个目录分发
 pyinstaller --noconsole --onedir invoice_helper_gui.py
+```
 最终目录结构如下：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/win 应用分发目录结构.png" alt=""/><br>
+</div>
 
-make life easier
+### make life easier
 
 以后，单位再让我贴油票，只需运行发票助手脚本 invoice_helper.py：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/操作 CLI 版.gif" alt=""/><br>
+</div>
 或者，运行 GUI 版的：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/操作 GUI 版.gif" alt=""/><br>
+</div>
 
 自动生成最终报销单文件，直接打印即可：
+<div align="center">
+<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/最终报销单.gif" alt=""/><br>
+</div>
 
 这下，世界清净了。
-
-
-
-
-
-
-
-
-
-
-
 
