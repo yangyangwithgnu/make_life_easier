@@ -53,18 +53,12 @@ pdftoppm -png -scale-to 900 （未知加油站）160.pdf > （未知加油站）
 composite -geometry +60+120 （未知加油站）160.png bottom_sheet.bmp expenses0.png
 ```
 其中，-geometry 设定发票图片从左上角的偏移位置。效果如下：
-![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png)  
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/已贴票的报销单.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/已贴票的报销单.png)  
 
 第五步，模拟手工笔迹填写底单信息。填写信息，实际上就是在图片指定位置上添加文字，用手写体模拟即可。
 
 网上找了一圈，李国夫手写体和我的笔迹挺像的：
-![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png)  
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/李国夫手写体.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/李国夫手写体.png)  
 下载安装好这款字体之后，找到它的安装路径：
 ```shell
 yangyang@gnu:~$ fc-list | grep -i liguofu
@@ -76,10 +70,7 @@ yangyang@gnu:~$ fc-list | grep -i liguofu
 convert -font '/home/yangyang/.local/share/fonts/liguofu.ttf' -pointsize 26 -annotate +968+96 '车辆运行费' expenses0.png expenses1.png
 ```
 其中，-annotate 指定输出文本的坐标位置。效果如下：
-![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png)  
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/已写内容及用途的报销单.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/已写内容及用途的报销单.png)  
 
 填写普通发票张数1：
 ```shell
@@ -94,10 +85,7 @@ convert -font '/home/yangyang/.local/share/fonts/liguofu.ttf' -pointsize 27 -ann
 convert -font '/home/yangyang/.local/share/fonts/liguofu.ttf' -pointsize 39 -annotate +990+580 '南门张学友' expenses3.png expense.png
 ```
 完成信息填写：
-![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png)  
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/报销单.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/报销单.png)  
 这样就完成了一张发票的处理，生成报销单图片。重复一至五步，处理完所有发票，生成多张报销单图片。
 
 第六步，将多张报销单图片转换、合并为单个 PDF 文件，以便一次性打印：
@@ -113,15 +101,9 @@ convert /path/to/expenses_img/*.png -quality 100 final.pdf
 你知道，我移居 linux 多年，只要用 bash 脚本把前面各个独立命令串联起来，释放双手的目的就达到了，但考虑到 win 用户，具体开发功能时，有 win 版的命令则直接调用命令，没有的则用 python 实现。在前面命令行推演实现半自动的基础上，python 实现全自动并不困难，其中几个关键点，简单聊下。
 
 关键点一，python 启用外部命令。python 执行系统命令的方式很多，个人偏好 subprocess.check_output()，它能关注到命令输出结果以及退出状态：
-![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png)  
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/执行系统命令.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/执行系统命令.png)  
 另外，路径或文件名相关的命令行参数，一定要带上引号，防止因文件名中含有空白字符导致命令执行失败：
-![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png)  
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/命令执行时应将路径放入引号中.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/命令执行时应将路径放入引号中.png)  
 提醒下，脚本语言直接启用外部命令的场景中，很可能导致命令注入漏洞，即便用引号包裹了命令参数（引号闭合、引号转义），所以，该脚本切勿用于线上服务，只能用于本地程序！
 
 关键点二，提取 PDF 中的文字信息。当前在维的、功能完善的 PDF 开源库有三个：PyPDF2（https://github.com/mstamy2/PyPDF2/ ）、pdfrw（https://github.com/pmaupin/pdfrw ）、PyMuPDF（https://github.com/pymupdf/PyMuPDF ），从口碑来看，PyPDF2 最赞，但就中文支持度而言，PyMuPDF 最优。
@@ -138,12 +120,9 @@ doc.close()
 效果不理想，比如，本应连续出现的“开票日期：2019 年 03 月 03 日”却分隔为“开票日期”、“2019  03  03”、“年月日”，且散落在不同地方，这类非结构化文本，程序很难处理。所以，提取 PDF 文本的功能，我不得不用前面的 xpdf 套件中的 pdftotext 命令来实现。
 
 pdftotext 在 linux 下运行效果还不错，win 下不知道怎么样，试试看。到 https://www.xpdfreader.com/download.html 下载 win 版：
-![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/XX.png)  
-<div align="center">
-<img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/win 版 pdftotext.png" alt=""/><br>
-</div>
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/win%20%E7%89%88%20pdftotext.png)  
 运行看看：
-![]("https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/pdftotext 无法写入中文文件名.png")  
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/pdftotext%20%E6%97%A0%E6%B3%95%E5%86%99%E5%85%A5%E4%B8%AD%E6%96%87%E6%96%87%E4%BB%B6%E5%90%8D.png)  
 报错“无法打开文件”，怀疑 pdftotext 无法写入中文文件名，变通下，用 - 替换文件名，不输出至文件而是直接显示：
 ![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/缺少语言支持包.png)  
 新问题又来了，从描述来看，好像缺少中文语言支持，找帮助文档看看：
