@@ -1,4 +1,4 @@
-<h2 align="center">make_life_easier</h2>
+<h2 align="center">make life easier</h2>
 
 #### 油票女秘书
 

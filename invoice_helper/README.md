@@ -276,9 +276,9 @@ pyinstaller --noconsole --onedir invoice_helper_gui.py
 
 ### make life easier
 
-以后，单位再让我贴油票，只需运行发票助手脚本 invoice_helper.py：  
+以后，单位再让我贴油票，只需运行发票助手脚本 invoice_helper_cli.py：  
 ![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/%E6%93%8D%E4%BD%9C%20CLI%20%E7%89%88.gif)  
-或者，运行 GUI 版的：  
+或者，运行图像界面的程序 invoice_helper_gui.py：  
 ![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/%E6%93%8D%E4%BD%9C%20GUI%20%E7%89%88.gif)  
 
 自动生成最终报销单文件，直接打印即可：  
