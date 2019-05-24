@@ -265,7 +265,7 @@ all_in_one.close()
 注意，invoice_helper_gui.exe 所在路径不能出现中文。
 
 另外，发票助手及其三方库，我得打包进单个的可执行程序，这样才能满足开箱即用。我通过pyinstaller（https://github.com/pyinstaller/pyinstaller ）将 *.py 打包为 *.exe：
-```python
+```
 # 按单个 exe 分发
 pyinstaller --noconsole --onefile invoice_helper_gui.py
 # 按单个目录分发
