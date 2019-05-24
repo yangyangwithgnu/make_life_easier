@@ -119,13 +119,13 @@ doc.close()
 ```
 效果不理想，比如，本应连续出现的“开票日期：2019 年 03 月 03 日”却分隔为“开票日期”、“2019  03  03”、“年月日”，且散落在不同地方，这类非结构化文本，程序很难处理。所以，提取 PDF 文本的功能，我不得不用前面的 xpdf 套件中的 pdftotext 命令来实现。
 
-pdftotext 在 linux 下运行效果还不错，win 下不知道怎么样，试试看。到 https://www.xpdfreader.com/download.html 下载 win 版：
+pdftotext 在 linux 下运行效果还不错，win 下不知道怎么样，试试看。到 https://www.xpdfreader.com/download.html 下载 win 版：  
 ![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/win%20%E7%89%88%20pdftotext.png)  
-运行看看：
+运行看看：  
 ![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/pdftotext%20%E6%97%A0%E6%B3%95%E5%86%99%E5%85%A5%E4%B8%AD%E6%96%87%E6%96%87%E4%BB%B6%E5%90%8D.png)  
-报错“无法打开文件”，怀疑 pdftotext 无法写入中文文件名，变通下，用 - 替换文件名，不输出至文件而是直接显示：
+报错“无法打开文件”，怀疑 pdftotext 无法写入中文文件名，变通下，用 - 替换文件名，不输出至文件而是直接显示：  
 ![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/缺少语言支持包.png)  
-新问题又来了，从描述来看，好像缺少中文语言支持，找帮助文档看看：
+新问题又来了，从描述来看，好像缺少中文语言支持，找帮助文档看看：  
 ![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/xpdf%20%E6%96%87%E6%A1%A3.png)  
 xpdfrc.txt 是配置说明、sample-xpdfrc 是配置样例，按指导，在桌面新建文件夹 xpdf-utils/，xpdf-utils/ 中新建文本 xpdfrc，内容如下：
 ```
