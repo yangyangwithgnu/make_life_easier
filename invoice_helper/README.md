@@ -129,12 +129,14 @@ convert /path/to/expenses_img/*.png -quality 100 final.pdf
 关键点二，提取 PDF 中的文字信息。当前在维的、功能完善的 PDF 开源库有三个：PyPDF2（https://github.com/mstamy2/PyPDF2/）、pdfrw（https://github.com/pmaupin/pdfrw）、PyMuPDF（https://github.com/pymupdf/PyMuPDF），从口碑来看，PyPDF2 最赞，但就中文支持度而言，PyMuPDF 最优。
 
 我尝试用 PyMuPDF 提取电子油票中的文本：
+```
 import fitz
 
 doc = fitz.open("（中石油）200.pdf")
 page = doc.loadPage(0)
 print(page.getText("text"))
 doc.close()
+```
 效果不理想，比如，本应连续出现的“开票日期：2019 年 03 月 03 日”却分隔为“开票日期”、“2019  03  03”、“年月日”，且散落在不同地方，这类非结构化文本，程序很难处理。所以，提取 PDF 文本的功能，我不得不用前面的 xpdf 套件中的 pdftotext 命令来实现。
 
 pdftotext 在 linux 下运行效果还不错，win 下不知道怎么样，试试看。到 https://www.xpdfreader.com/download.html 下载 win 版：
@@ -142,6 +144,7 @@ pdftotext 在 linux 下运行效果还不错，win 下不知道怎么样，试�
 报错“无法打开文件”，怀疑 pdftotext 无法写入中文文件名，变通下，用 - 替换文件名，不输出至文件而是直接显示：
 新问题又来了，从描述来看，好像缺少中文语言支持，找帮助文档看看：
 xpdfrc.txt 是配置说明、sample-xpdfrc 是配置样例，按指导，在桌面新建文件夹 xpdf-utils/，xpdf-utils/ 中新建文本 xpdfrc，内容如下：
+```
 #----- display fonts
 
 # These map the Base-14 fonts to the Type 1 fonts that ship with
@@ -186,6 +189,7 @@ unicodeMap	EUC-CN		.\\chinese-simplified\EUC-CN.unicodeMap
 unicodeMap	GBK		.\\chinese-simplified\GBK.unicodeMap
 cMapDir		Adobe-GB1	.\\chinese-simplified\CMap
 toUnicodeDir			.\\chinese-simplified\CMap
+```
 
 配置项 fontFile 用于指定 PS 字体路径。PS 字体是按 PostScript 页面描述语言（PDL）规则定义的字体，属于矢量字体，常用的 Symbol 和 ZapfDingbats 两种 PS 字体可在页面下载：
 在 xpdf-utils/ 中新建文件夹 ps-fonts/，将下载回来的 Symbol 和 ZapfDingbats 两种 PS 字体放入其中。
@@ -200,6 +204,7 @@ xpdf-utils/ 完整目录结构如下：
 运行试试，一切正常：
 
 用 python 简单封装如下：
+```python
 def convertPdf2Txt(pdf_path: str) -> str:
     # 执行外部命令 pdftotxt，提取 PDF 中的文本
     if platform.system() == 'Linux':
@@ -208,6 +213,7 @@ def convertPdf2Txt(pdf_path: str) -> str:
         return(subprocess.check_output(F'pdftotext.exe -q "{pdf_path}" -', shell=True, cwd='pdf2txt').decode('gbk'))
     else:
         raise(Exception('ERROR! unkown OS.')
+```
 
 关键点三，提取开票日期中的数字部分。信息 "开票日期: 2019 年02 月27 日" 中的年月日，我以非数字作为分隔符，即可提取数字部分：
 其中，正则的 [^0-9] 等同于 '\D'。
@@ -219,6 +225,7 @@ def convertPdf2Txt(pdf_path: str) -> str:
 关键点五，PDF 转图片、图片叠加、图片添加文字、图片转 PDF、PDF 合并。
 
 PyMuPDF 库可以轻松实现 PDF 转图片：
+```
 import fitz
 
 doc = fitz.open("（中石油）200.pdf")
@@ -226,6 +233,7 @@ matrix = fitz.Matrix(1.47, 1.47)  # 缩放比例
 pixs = doc[0].getPixmap(matrix=matrix, alpha=False)  # 获取 PDF 第一页的所有像素
 pixs.writePNG("（中石油）200.png")  # 将所有像素写入图片文件
 doc.close()
+```
 
 借助 pillow 进行图片叠加，模拟将电子发票图片至粘贴底单上的效果：
 from PIL import Image
