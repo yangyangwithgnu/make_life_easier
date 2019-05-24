@@ -41,7 +41,7 @@ sudo apt install poppler-utils poppler-data -y
 pdftotext （未知加油站）160.pdf
 ```
 将电子发票中的文本信息提取到同目录下的 （未知加油站）160.txt 中：
-div align="center">
+<div align="center">
 <img src="https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/提取电子发票中的文本信息.png" alt=""/><br>
 </div>
 第二步，校验发票是否满足报销要求。虽然从 PDF 提取出的文本信息不那么工整，但报销要求相关的几个要素都还是能以结构化的形式呈现。开票日期，提取 开票日期: 2019 年02 月27 日，查询百度，确认是否为工作日；购买方名称，全文搜索确认是否存在关键字 中国xx集团四川有限公司；发票金额，提取关键字 (小写) 随后的数字，确认是否不大于 1000。如果三个条件均为真，那么该张发票可报销。
