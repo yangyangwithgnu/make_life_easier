@@ -109,7 +109,7 @@ convert /path/to/expenses_img/*.png -quality 100 final.pdf
 关键点二，提取 PDF 中的文字信息。当前在维的、功能完善的 PDF 开源库有三个：PyPDF2（https://github.com/mstamy2/PyPDF2/ ）、pdfrw（https://github.com/pmaupin/pdfrw ）、PyMuPDF（https://github.com/pymupdf/PyMuPDF ），从口碑来看，PyPDF2 最赞，但就中文支持度而言，PyMuPDF 最优。
 
 我尝试用 PyMuPDF 提取电子油票中的文本：
-```
+```python
 import fitz
 
 doc = fitz.open("（中石油）200.pdf")
