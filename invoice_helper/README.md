@@ -283,7 +283,8 @@ pyinstaller --noconsole --onedir invoice_helper_gui.py
 
 自动生成最终报销单文件，直接打印即可：  
 ![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/最终报销单.gif)  
-记录用的 excel  数据也出来了：
+记录用的 excel  数据也出来了：  
+![](https://github.com/yangyangwithgnu/make_life_easier/blob/master/invoice_helper/img/%E7%B2%98%E8%B4%B4%20excel%20%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE.gif)  
 
 这下，世界清净了。
 
