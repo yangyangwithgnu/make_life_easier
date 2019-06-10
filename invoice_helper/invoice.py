@@ -20,7 +20,7 @@ class Invoice:
         if platform.system() == 'Linux':
             return(subprocess.check_output(F'pdftotext "{pdf_path}" -', shell=True).decode('utf-8'))
         elif platform.system() == 'Windows':
-            return(subprocess.check_output(F'pdftotext.exe -q "{pdf_path}" -', shell=True, cwd='xpdf-utils').decode('gbk'))
+            return(subprocess.check_output(F'pdftotext.exe -q "{pdf_path}" -', shell=True, cwd='xpdf-utils-for-win').decode('gbk'))
         else:
             raise(Exception('ERROR! unkown OS.'))
 
@@ -50,13 +50,34 @@ class Invoice:
             self._seller_company = Invoice.SellerCompany.Unkown
             self._seller_company_name = UNKOWN
         
+        # 获取发票代码
+        KEYOWRD = '发票代码'
+        begin_idx = self._txt.index(KEYOWRD)
+        end_idx = self._txt.index('\n', begin_idx)
+        line = self._txt[begin_idx:end_idx]
+        (self._invoice_code, *_) = filter(None, re.split(R'[^0-9]', line))
+        
+        # 获取发票号码
+        KEYOWRD = '发票号码'
+        begin_idx = self._txt.index(KEYOWRD)
+        end_idx = self._txt.index('\n', begin_idx)
+        line = self._txt[begin_idx:end_idx]
+        (self._invoice_no, *_) = filter(None, re.split(R'[^0-9]', line))
+        
+        # 获取校验码
+        KEYOWRD = '校 验 码'
+        begin_idx = self._txt.index(KEYOWRD)
+        end_idx = self._txt.index('\n', begin_idx)
+        line = self._txt[begin_idx:end_idx]
+        self._invoice_checkcode = ''.join(filter(None, re.split(R'[^0-9]', line)))
+        
         # 获取开票日期
         # 样例：开票日期: 2019 年02 月27 日
         KEYOWRD = '开票日期'
         begin_idx = self._txt.index(KEYOWRD)
         end_idx = self._txt.index('\n', begin_idx)
         line = self._txt[begin_idx:end_idx]
-        (self._year, self._month, self._day, *_) = filter(None, re.split(R'\D', line))  # 提取年月日，以非数字作为分隔符，等同于 R'[^0-9]'
+        (self._year, self._month, self._day, *_) = filter(None, re.split(R'[^0-9]', line))  # 提取年月日，以非数字作为分隔符，等同于 R'[^0-9]'
         
         # 开票日期是否为工作日
         self._b_workday = chinese_calendar.is_workday(datetime.date(int(self._year), int(self._month), int(self._day)))
@@ -91,6 +112,9 @@ class Invoice:
     def getTxt(self):
         return(self._txt)
 
+    def getCheckcode(self):
+        return(self._invoice_checkcode)
+
     def getDate(self):
         return(self._year, self._month, self._day)
 
@@ -99,6 +123,12 @@ class Invoice:
 
     def getSellerCompName(self):
         return(self._seller_company_name)
+
+    def getInvoiceCode(self):
+        return(self._invoice_code)
+
+    def getInvoiceNo(self):
+        return(self._invoice_no)
 
     def isValidDate(self):
         # 开票日期只能为当年的工作日

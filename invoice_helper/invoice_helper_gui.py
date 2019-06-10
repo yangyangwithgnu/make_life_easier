@@ -75,8 +75,23 @@ def makeExpense():
     # 显示处理结果
     text_ctrler.insert(tkinter.END, F'step3. now U can print finally expense {all_in_one_name}! \n')
     text_ctrler.insert(tkinter.END, '=-' * 32)
-    text_ctrler.insert(tkinter.END, '\n')
+    text_ctrler.insert(tkinter.END, '\n\n')
     text_ctrler.update()
+
+    # 显示导入模版 excel
+    text_ctrler.insert(tkinter.END, F'step4. copy excel import template date: \n')
+    for valid_invoice in valid_invoices:
+        text_ctrler.insert(tkinter.END, valid_invoice.getInvoiceCode())
+        text_ctrler.insert(tkinter.END, '\t')
+        text_ctrler.insert(tkinter.END, valid_invoice.getInvoiceNo())
+        text_ctrler.insert(tkinter.END, '\t')
+        text_ctrler.insert(tkinter.END, '-'.join(valid_invoice.getDate()))
+        text_ctrler.insert(tkinter.END, '\t')
+        text_ctrler.insert(tkinter.END, valid_invoice.getCheckcode()[-6:])
+        text_ctrler.insert(tkinter.END, '\n')
+        text_ctrler.update()
+
+    
 
 
 win = tkinter.Tk()
